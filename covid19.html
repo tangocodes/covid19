@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CovidTracker</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="updates()">
+	<section class="container-fluid">
+     <center>
+     	<h1 style="color:skyblue,font-size:32px">
+     	   C O V I D 1 9 T R A C K E R
+     	</h1>
+     </center>
+    <br>
+    <br>
+             &nbsp;&nbsp;&nbsp;<h2 style="color: blue">Total-Confirmed Cases : <span class="tot" style="color: White"></span>
+        &nbsp;&nbsp;&nbsp;
+          Recovered : <span class="dis" style="color: green"></span>
+        &nbsp;&nbsp;&nbsp;
+          Deaths : <span class="dea" style="color: red"></span></h2>
+    <BR>
+    <br>
+<div class="table-responsive container-fluid"
+id="cha">
+     <table id="tabs">
+        <thead>
+     	<tr>
+     		<th>Country</th>
+     		<th>Total-Confirmed</th>
+     		<th>Total-Recovered</th>
+     		<th>Total-Deaths</th>
+     		<th>New-Confirmed</th>
+     		<th>New-Deaths</th>
+     	</tr>
+     </thead>
+     </table>
+ </div>
+</section>
+<script>
+	function updates() {
+	     $.get('https://api.covid19api.com/summary',
+	     	function(data)
+	     	{  
+          var tot = document.querySelector('.tot')
+        tot.innerHTML = data['Global']['TotalConfirmed'];
+        var dis =  document.querySelector('.dis')
+        dis.innerHTML = data['Global']['TotalRecovered'];
+        var dea = document.querySelector('.dea');
+        dea.innerHTML = data['Global']['TotalDeaths']
+	     		// console.log(data['Countries'].length)
+                var tabs  = document.getElementById("tabs")
+                
+                for(var i =1;i<(data['Countries'].length);i++)
+                {
+                    var x = tabs.insertRow();
+                    x.insertCell(0)
+                    
+                tabs.rows[i].cells[0].innerHTML=data['Countries'][i-0]['Country'];
+                tabs.rows[i].cells[0].style.background='#6640B7';
+                tabs.rows[i].cells[0].style.color='#fff';
+
+
+                x.insertCell(1)
+                tabs.rows[i].cells[1].innerHTML=data['Countries'][i-0]['TotalConfirmed'];
+                tabs.rows[i].cells[1].style.background='skyblue';
+                tabs.rows[i].cells[1].style.color='#fff';
+
+                 x.insertCell(2)
+                tabs.rows[i].cells[2].innerHTML=data['Countries'][i-0]['TotalRecovered'];
+                tabs.rows[i].cells[2].style.background='lightgreen';
+                tabs.rows[i].cells[2].style.color='#fff';
+
+                 x.insertCell(3)
+                tabs.rows[i].cells[3].innerHTML=data['Countries'][i-0]['TotalDeaths'];
+                tabs.rows[i].cells[3].style.background='red';
+                tabs.rows[i].cells[3].style.color='#fff';
+
+                  x.insertCell(4)
+                tabs.rows[i].cells[4].innerHTML=data['Countries'][i-0]['NewConfirmed'];
+                tabs.rows[i].cells[4].style.background='#450CA5';
+                tabs.rows[i].cells[4].style.color='#fff';
+                
+
+                  x.insertCell(5)
+                tabs.rows[i].cells[5].innerHTML=data['Countries'][i-0]['NewDeaths'];
+                tabs.rows[i].cells[5].style.background='red';
+                tabs.rows[i].cells[5].style.color='#fff';
+
+                }
+
+	     	})
+	}
+</script>
+
+<style>
+    body
+{
+    background-color: #C9DD9F;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+}
+.h1{
+   font-size: 32px;
+   color: black
+}
+#tabs
+{
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;  
+}
+#tabs td,#tabs th
+{
+    border: 1px solid #ddd;
+  padding: 8px;
+   font-weight: bold;
+  font-size: 20px;  
+}
+table th
+{
+    text-align: center;
+     font-weight: bold;
+  font-size: 20px;
+  background-color: #A17AE9; 
+    position: sticky;
+    top: 0;
+    z-index: 100;  
+}
+
+table thead tr th {
+
+  background-color: #A17AE9;
+  position: sticky;
+  z-index: 100;
+  top: 0;
+}
+</style>
+</body>
+</html>
